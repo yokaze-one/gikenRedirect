@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<!--ここに自動ページ切り替え秒数と切り替え先リンク記載-->
+		<!--文字コードはutf-8を指定-->
+		<meta charset="utf-8">
+		<!--レスポンシブ対応-->
+		<meta name="viewport" content="width=device-width">
+		<title>オワコンサーバー</title>
+		<!--jQueryのファイル呼出-->
+		<script type="text/javascript" src="jquery-3.7.1.min.js"></script>
+
+
+		<!--css内容記述-->
+		<style type="text/css">
+			/*画像の設定*/
+			.image_alignment img{
+				width:8%;
+				height:auto;
+			}
+
+			/*ヘッダータグの設定*/
+			header{
+				/*画像を配置しない場合にはmargin-top:(8-10目安)%;*/
+				border-top:solid 5px #5bc0de;
+				border-bottom:solid 5px #5bc0de;
+			}
+
+			/*divタグの設定*/
+			div{
+				text-align:center;
+			}
+
+			/*pタグ設定*/
+			p{
+				margin-top:2%;
+			}
+
+			/*ボタン設定*/
+			.btn{
+				border: none;
+				background:#007bff;
+				width:150px;
+				margin-top:5%;
+				color:#FFF;
+				border-radius:3px;
+				font-size:25px
+			}
+
+
+			.gaming{
+				animation:rainbow 1s infinite;
+			}
+			
+			@keyframes rainbow{
+    			12%{color:#ff5353;}
+    			24%{color:#ffcf53;}
+    			36%{color:#e8ff53;}
+    			48%{color:#53ff5d;}
+    			60%{color:#53ffbc;}
+    			72%{color:#5393ff;}
+    			84%{color:#ca53ff;}
+    			100%{color:#ff53bd;}
+			}
+
+			.image_alignment{
+				animation:unruly 0.1s infinite;
+				position: relative;
+
+			}
+			
+			/*@keyframes unruly{
+    			12%{left:30px; bottom:20px;}
+    			24%{right:20px;}
+    			36%{left:10px; top:25px;}
+    			48%{right:20px; bottom:30px;}
+    			60%{left:25px; top:10px;}
+    			72%{right:30px; top:30px;}
+    			84%{right:10px; bottom:20px;}
+    			100%{left:20; top:10px;}
+			}*/
+
+			#trap{
+			color:blue;
+			}
+
+			.hidden{
+			display:none;
+			}
+
+			#count{
+			font-size:35px;
+			margin-top:15%;
+			}
+
+		</style>
+	</head>
+
+
+	<!--表示内容記述-->
+	<body>
+		<!--画像配置　クラスはimage_alignment-->
+		<div class="image_alignment">
+			<a class="link" ><img src="makoto.png" alt="アイコン"></a>
+		</div>
+
+		<div>
+			<!--ヘッダー配置-->
+			<header>
+				<h1 class="gaming">このサーバーは旧サーバーです</h1>
+			</header>
+
+			<!--本文-->
+			<p class="text">サーバーは<span id="trap">こちら</span>に移動しました。</br><span id="Timer" class="gaming">5</span>秒後に自動で切り替わります。</p>
+			
+			<p>手動で移動するには以下のボタンを押してください。</p>
+			
+			<p>このページは2024年12月31日まで表示されます。</p>
+			
+			<p  id="count" class="hidden">かかった時間は<span id="countup" class="gaming">0</span>秒だよ★</p>
+			<p id="aori" class="hidden">おっそーい★</p>
+			<!--ボタン配置　クラスはbtn-->
+			<input type="button" class="btn gaming" value="移動">
+		</div>
+	</body>
+
+
+	<!--JS記述-->
+	<script type="text/javascript">
+		$(function(){
+			//秒数を変数にセット
+			var time = 5;
+			var counttime = 0;
+			//1000ミリ秒(1秒)ごとにstartTimer関数を処理
+			var interval = setInterval(startTimer,1000);
+			//startTimer関数を呼出
+			startTimer()
+	
+			function clearlink() {
+			
+			};
+
+
+			function startTimer(){
+				//秒数を1引く
+				time --;
+				
+				if(time < 0){
+					//タイマー処理停止
+					clearInterval(interval);
+					nextText()
+				}else{
+					//表示の残秒数書き換え
+					$('#Timer').html(time);
+				};
+			};
+
+
+			function nextText(){
+				$('.image_alignment img').css('width','1%');
+				$(".link").prop("href","https://www.google.co.jp/");
+				$(".btn").addClass("hidden");
+				$("p").addClass("hidden");
+				$("#count").removeClass("hidden");
+				$("h1").html("残念‼ただでは行かないよ!!</br>アイコンをクリックすると変更先に行けるよ！");
+				var randomInterval = setInterval(moveImg,930);
+				var countup = setInterval(countupTimer,1000);
+			};
+
+
+			$('.btn,#trap').click(function(){
+				clearInterval(interval);
+				nextText()
+			});
+
+
+			function countupTimer(){
+				//秒数を1引く
+				counttime ++;
+				if(counttime == 30){
+					//タイマー処理停止
+					$('#aori').removeClass("hidden");
+					$('#countup').html(counttime);
+				}else{
+					//表示の残秒数書き換え
+					$('#countup').html(counttime);
+				};
+			};
+
+
+			function moveImg(){
+				var cont = Math.ceil(Math.random()*50);
+				var topcont = Math.ceil(Math.random()*700);
+				var aryRL = Math.ceil(Math.random()*2);
+				cont = cont + "%";
+				topcont = topcont + "px";
+				if(aryRL == 1){
+					RL = "left";
+				}else if(aryRL = 2){
+					RL = "right";
+				}
+				$('.image_alignment').css("left","");
+				$('.image_alignment').css("right","");
+				$('.image_alignment').css("position","static");
+				$('.image_alignment').css("position","relative");
+				$('.image_alignment').css(RL,cont);
+				$('.image_alignment').css("top",topcont);
+				console.log(RL);
+			};
+		});
+	</script>
+	
+</html>
+
+
